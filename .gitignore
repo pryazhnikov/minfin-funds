@@ -1,3 +1,7 @@
+# Data dir
+data/input/
+!data/input/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
