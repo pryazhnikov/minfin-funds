@@ -1,6 +1,8 @@
 # Data dir
 data/input/
 !data/input/.gitkeep
+data/output/
+!data/output/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

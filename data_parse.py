@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import config as cfg
+
 import numpy as np
 import pandas as pd
 import glob
@@ -105,41 +107,27 @@ def get_last_source_file(pattern, offset):
     sorted_files_list = sorted(files_list, key=get_sort_date)
     return sorted_files_list[-1 - offset]
 
+def get_target_file_name(basename):
+    abs_path = os.path.dirname(os.path.abspath(__file__))
+    return abs_path + '/data/output/' + os.path.basename(basename)
+
 def main():
     pd.set_option('display.width', 160)
 
     source_offset = 0
 
-    fnb_file = get_last_source_file('Tablitsa_FNB_*.xlsx', source_offset)
-    print(fnb_file)
-    fnb_loader = FundLoader(fnb_file)
-    fnb_df = fnb_loader.load()
+    for fund_info in cfg.AVAILABLE_FUNDS:
+        print(fund_info['name'] + " processing start")
+        df_file = get_last_source_file(fund_info['input_pattern'], source_offset)
+        print("Datafile loading {}".format(df_file))
+        fund_loader = FundLoader(df_file)
+        fund_df = fund_loader.load()
 
-    print("\n## FNB: " + fnb_file)
-    last_fnb_df = fnb_df.iloc[-12:]
-    print("\nLast year FNB amounts:")
-    print(last_fnb_df[ ['AmountTotalAfterRub', 'AmountTotalDiffRub', 'WithdrawalTotalRub', 'IncomeTotalRub', 'AmountTotalAfterUsd'] ])
+        target_file = get_target_file_name(fund_info['output_file'])
+        print("Saving CSV data into {}".format(target_file))
 
-    #print("Header: " + str(fnb_df.columns))
-    #print("Index: " + str(fnb_df.index))
-    #print(fnb_df.iloc[-1])
-
-    reserves_file = get_last_source_file('Tablitsa_Rezervnyy_fond_*.xlsx', source_offset)
-    reserves_loader = FundLoader(reserves_file)
-    reserves_df = reserves_loader.load()
-
-    print("\n## Reserves " + reserves_file)
-    #print(reserves_df.iloc[-1])
-
-    last_reserves_df = reserves_df.iloc[-24:]
-    print("\nLast year reserves amounts:")
-    print(last_reserves_df[ ['AmountTotalBeforeRub', 'AmountTotalAfterRub', 'AmountTotalDiffRub', 'AmountTotalAfterUsd'] ])
-
-    last_reserves_df.iloc[0]['AmountTotalDiffRub'] = np.nan
-    last_summary = last_reserves_df[ ['AmountTotalDiffRub', 'WithdrawalTotalRub', 'IncomeTotalRub' ] ].sum()
-
-    print("\nLast year reserves summary:")
-    print(last_summary)
+        save_result = fund_df.to_csv(target_file)
+        print("Done! Saving result: {}".format(save_result))
 
 if '__main__' == __name__:
     main()
