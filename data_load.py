@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import config as cfg
+import argparse
 import urllib
 import datetime
 import os
@@ -33,15 +34,37 @@ def download_fund_file(fund_info, now):
     return result
 
 
+def get_arguments():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--count', help='Count of files to load',
+                        action='store', type=int, default=1)
+    parser.add_argument('--stop-on-success', help='Stop after first loaded file',
+                        dest='stop_on_success', action='store_true', default=False)
+
+    return parser.parse_args()
+
+
 def main():
+    args = get_arguments()
+    if args.count < 1:
+        raise ValueError("Count value should be positive")
+
     now = datetime.date.today()
     for fund_info in cfg.AVAILABLE_FUNDS:
-        print("{} processing start".format(fund_info['name']))
-        result = download_fund_file(fund_info, now)
-        if result:
-            print("\tSuccess!")
-        else:
-            print("\tFailed!")
+        time = now
+        for i in range(args.count):
+            print("{} processing #{}\t({})".format(fund_info['name'], i + 1, time.isoformat()))
+            result = download_fund_file(fund_info, time)
+            if result:
+                print("\tSuccess!")
+                if args.stop_on_success:
+                    print("Processing stop due to successful file loading")
+                    break
+            else:
+                print("\tFailed!")
 
-if '__main__' == __name__:
+            time -= datetime.timedelta(days=30)
+
+
+if __name__ == '__main__':
     main()
