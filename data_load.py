@@ -6,6 +6,7 @@ import datetime
 import os
 import re
 import requests
+import sys
 
 
 def get_source_url(template, dt):
@@ -45,6 +46,8 @@ def get_arguments():
 
 
 def main():
+    is_success = True
+
     args = get_arguments()
     if args.count < 1:
         raise ValueError("Count value should be positive")
@@ -61,10 +64,15 @@ def main():
                     print("Processing stop due to successful file loading")
                     break
             else:
+                is_success = False
                 print("\tFailed!")
 
             time -= datetime.timedelta(days=30)
 
+    return is_success
+
 
 if __name__ == '__main__':
-    main()
+    is_success = main()
+    exit_code = 0 if is_success else 1
+    sys.exit(exit_code)
