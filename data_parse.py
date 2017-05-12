@@ -120,12 +120,14 @@ def get_target_file_name(basename):
 def main():
     pd.set_option('display.width', 160)
 
+    result = True
     source_offset = 0
 
     for fund_info in cfg.AVAILABLE_FUNDS:
         print(fund_info['name'] + " processing start")
         df_file = get_last_source_file(fund_info['input_pattern'], source_offset)
         if not df_file:
+            result = False
             print("No input files found for fund " + fund_info['name'])
             continue
 
@@ -139,5 +141,9 @@ def main():
         save_result = fund_df.to_csv(target_file)
         print("Done! Saving result: {}".format(save_result))
 
+    return result
+
 if '__main__' == __name__:
-    main()
+    is_success = main()
+    exit_code = 0 if is_success else 1
+    sys.exit(exit_code)
