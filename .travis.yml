@@ -1,0 +1,10 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+install:
+  - pip install -r requirements.txt
+script:
+  - ./data_load.py --count 1 --stop-on-success
+  - ./data_parse.py
+
