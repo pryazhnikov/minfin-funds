@@ -105,6 +105,8 @@ def get_sort_date(name):
 def get_last_source_file(pattern, offset):
     abs_path = os.path.dirname(os.path.abspath(__file__))
     files_list = glob.glob(abs_path + '/data/input/' + pattern)
+    if not files_list:
+        return None
 
     sorted_files_list = sorted(files_list, key=get_sort_date)
     return sorted_files_list[-1 - offset]
@@ -123,6 +125,10 @@ def main():
     for fund_info in cfg.AVAILABLE_FUNDS:
         print(fund_info['name'] + " processing start")
         df_file = get_last_source_file(fund_info['input_pattern'], source_offset)
+        if not df_file:
+            print("No input files found for fund " + fund_info['name'])
+            continue
+
         print("Datafile loading {}".format(df_file))
         fund_loader = FundLoader(df_file)
         fund_df = fund_loader.load()
