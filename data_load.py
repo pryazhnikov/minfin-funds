@@ -46,7 +46,7 @@ def get_arguments():
 
 
 def main():
-    is_success = True
+    exit_code = 0
 
     args = get_arguments()
     if args.count < 1:
@@ -71,12 +71,11 @@ def main():
             time -= datetime.timedelta(days=30)
 
         if not is_file_found:
-            is_success = False
+            exit_code = 1
 
-    return is_success
+    return exit_code
 
 
 if __name__ == '__main__':
-    is_success = main()
-    exit_code = 0 if is_success else 1
+    exit_code = main()
     sys.exit(exit_code)
