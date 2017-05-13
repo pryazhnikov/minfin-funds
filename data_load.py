@@ -54,20 +54,24 @@ def main():
 
     now = datetime.date.today()
     for fund_info in cfg.AVAILABLE_FUNDS:
+        is_file_found = False
         time = now
         for i in range(args.count):
             print("{} processing #{}\t({})".format(fund_info['name'], i + 1, time.isoformat()))
             result = download_fund_file(fund_info, time)
             if result:
+                is_file_found = True
                 print("\tSuccess!")
                 if args.stop_on_success:
                     print("Processing stop due to successful file loading")
                     break
             else:
-                is_success = False
                 print("\tFailed!")
 
             time -= datetime.timedelta(days=30)
+
+        if not is_file_found:
+            is_success = False
 
     return is_success
 
