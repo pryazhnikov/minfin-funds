@@ -1,4 +1,5 @@
 numpy
 pandas
+pep8
 requests
 xlrd
