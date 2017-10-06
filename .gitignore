@@ -1,3 +1,6 @@
+# IDE system files
+.vscode/
+
 # Data dir
 data/input/
 !data/input/.gitkeep
