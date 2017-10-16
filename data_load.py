@@ -9,20 +9,30 @@ import requests
 import sys
 
 
-def get_source_url(template, dt):
-    return template.format(year=dt.strftime('%Y'), month=dt.strftime('%m'))
+def get_source_url(templates_list, dt):
+    date_formatted = dt.strftime('%Y-%m-%d')
+    for valid_till in sorted(templates_list.keys()):
+        if date_formatted < valid_till:
+            template = templates_list[valid_till]
+            return template.format(year=dt.strftime('%Y'), month=dt.strftime('%m'))
+
+    return None
 
 
-def get_target_file(url):
+def get_target_file(file_template, dt):
     abs_path = os.path.dirname(os.path.abspath(__file__))
     output_path = abs_path + '/data/input/'
-    base_file = re.sub(r'^.+/', '', url)
+    base_file = file_template.format(year=dt.strftime('%Y'), month=dt.strftime('%m'))
     return output_path + base_file
 
 
 def download_fund_file(fund_info, now):
-    url = get_source_url(fund_info['source_url_template'], now)
-    out_file = get_target_file(url)
+    url = get_source_url(fund_info['source_url_templates'], now)
+    if url is None:
+        print("\tCannot find url for date: {}".format(now))
+        return False
+
+    out_file = get_target_file(fund_info['target_file_template'], now)
     print("\tProcessing: {} -> {}".format(url, out_file))
 
     r = requests.get(url)
@@ -58,7 +68,7 @@ def main():
         time = now
         for i in range(args.count):
             print("{} processing #{}\t({})".format(fund_info['name'], i + 1, time.isoformat()))
-            result = download_fund_file(fund_info, time)
+            result = download_fund_file(fund_info['load'], time)
             if result:
                 is_file_found = True
                 print("\tSuccess!")

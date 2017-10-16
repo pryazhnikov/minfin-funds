@@ -126,7 +126,7 @@ def main():
 
     for fund_info in cfg.AVAILABLE_FUNDS:
         print(fund_info['name'] + " processing start")
-        df_file = get_last_source_file(fund_info['input_pattern'], source_offset)
+        df_file = get_last_source_file(fund_info['transform']['input_file_pattern'], source_offset)
         if not df_file:
             exit_code = 1
             print("No input files found for fund " + fund_info['name'])
@@ -136,7 +136,7 @@ def main():
         fund_loader = FundLoader(df_file)
         fund_df = fund_loader.load()
 
-        target_file = get_target_file_name(fund_info['output_file'])
+        target_file = get_target_file_name(fund_info['transform']['output_file'])
         print("Saving CSV data into {}".format(target_file))
 
         save_result = fund_df.to_csv(target_file)
