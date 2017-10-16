@@ -84,7 +84,7 @@ class FundLoader:
         result_df = result_df.iloc[2:]
 
         # Ключи должны быть датой
-        result_df.index = result_df.index.to_datetime()
+        result_df.index = pd.to_datetime(result_df.index)
 
         # Проверка корректности полученных значений
         self.verify_values(result_df)
