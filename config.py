@@ -23,7 +23,7 @@ AVAILABLE_FUNDS = (
             'target_file_template': 'Tablitsa_Rezervnyy_fond_01-{month}-{year}.xlsx',
         },
         'transform': {
-            'input_pattern': 'Tablitsa_Rezervnyy_fond_*.xlsx',
+            'input_file_pattern': 'Tablitsa_Rezervnyy_fond_*.xlsx',
             'output_file': 'reserved.csv',
         },
     },
