@@ -3,8 +3,9 @@ AVAILABLE_FUNDS = (
         'name': 'FNB',
         'load': {
             'source_url_templates': {
-                '2017-09-30': 'http://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_FNB_01-{month}-{year}.xlsx',
-                '9999-99-99': 'http://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_FNB_01{month}{year}.xlsx',
+                '2017-09-30': 'https://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_FNB_01-{month}-{year}.xlsx',
+                '2017-11-30': 'https://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_FNB_01{month}{year}.xlsx',
+                '9999-99-99': 'https://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_FNB_01-{month}-{year}.xlsx',
             },
             'target_file_template': 'Tablitsa_FNB_01-{month}-{year}.xlsx',
         },
@@ -17,9 +18,9 @@ AVAILABLE_FUNDS = (
         'name': 'Reserved fund',
         'load': {
             'source_url_templates': {
-                '2017-09-30': 'http://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_Rezervnyy_fond_01-{month}-{year}.xlsx',
-                '2017-10-31': 'http://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_Rezervnyy_fond_01{month}{year}.xlsx',
-                '9999-99-99': 'http://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_Rezervnyy_fond_01-{month}-{year}.xlsx',
+                '2017-09-30': 'https://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_Rezervnyy_fond_01-{month}-{year}.xlsx',
+                '2017-10-30': 'https://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_Rezervnyy_fond_01{month}{year}.xlsx',
+                '9999-99-99': 'https://minfin.ru/common/upload/library/{year}/{month}/main/Tablitsa_Rezervnyy_fond_01-{month}-{year}.xlsx',
             },
             'target_file_template': 'Tablitsa_Rezervnyy_fond_01-{month}-{year}.xlsx',
         },
