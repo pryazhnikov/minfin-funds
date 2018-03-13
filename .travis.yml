@@ -11,4 +11,5 @@ script:
 
   # Run codestyle checks
   - cd "$TRAVIS_BUILD_DIR"
-  - pep8 --config=setup.cfg --statistics .
+  - pip install pycodestyle
+  - pycodestyle --config=setup.cfg --statistics -v .
